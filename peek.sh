@@ -1,9 +1,18 @@
-#usr/bin/bash
-# print the first 3 lines
-head -n $2 $1;
+#!/bin/bash
 
-# print a separator line
-echo "...";
+if [ -z "$2" ]; then
+    lines=3
+else
+    lines=$2
+fi
 
-# print the last 3 lines
-tail -n $2 $1;
+total_lines=$(wc -l < "$1")
+
+if [ "$total_lines" -lt $((2 * lines)) ]; then
+    cat "$1"
+else
+    echo "The file has more than $((2 * lines)) lines. Displaying the first $lines and last $lines lines:"
+    head -n "$lines" "$1"
+    echo "..."
+    tail -n "$lines" "$1"
+fi
